@@ -1,0 +1,5 @@
+/target
+/.idea
+/workdir/**
+!/workdir/config.toml
+.env

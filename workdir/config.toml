@@ -1,0 +1,18 @@
+[main]
+address = "0.0.0.0:8080"
+db_url = "sqlite://example.db"
+collect_stats = true
+debug = true # Enables debug logs
+
+[internal_api]
+access_token = "your-internal-api-access-token" # Limits access to internal API
+
+[assets]
+root_dir = "assets" # Should contain `skins` and `capes` directories. Is exposed as `/` location.
+root_url = "http://localhost:8080" # Is used to build the full skin url sent to client
+default_skin_path = "default_skin" # path is relative to `assets_dir`
+default_skin_slim = true
+
+[signing]
+players_keys_dir = "keypairs"
+server_key_pem = "server_key.pem" # Encoded in PKCS #8
