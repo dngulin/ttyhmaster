@@ -1,8 +1,8 @@
 <?php
-const TTYHBRIDGE_HOST = 'http://example.com';
-const TTYHBRIDGE_TOKEN = 'example-token';
+const TTYH_MASTER_HOST = 'http://example.com';
+const TTYH_MASTER_API_TOKEN = 'example-token';
 
-function ttyhbridge_get_response_code($http_response_header): int
+function ttyh_master_get_response_code($http_response_header): int
 {
     if (is_array($http_response_header)) {
         $parts = explode(' ', $http_response_header[0]);
@@ -14,10 +14,10 @@ function ttyhbridge_get_response_code($http_response_header): int
 }
 
 // Returns [ 'code' => 200, 'payload' => [ ... ] ] or [ 'code' => int ]
-function ttyhbridge_get($endpoint): array
+function ttyh_master_get($endpoint): array
 {
-    $url = TTYHBRIDGE_HOST . '/' . $endpoint;
-    $auth_header = 'Authorization: Bearer ' . TTYHBRIDGE_TOKEN;
+    $url = TTYH_MASTER_HOST . '/' . $endpoint;
+    $auth_header = 'Authorization: Bearer ' . TTYH_MASTER_API_TOKEN;
 
     $options = [
         'http' => [
@@ -27,7 +27,7 @@ function ttyhbridge_get($endpoint): array
     ];
 
     $response = file_get_contents($url, false, stream_context_create($options));
-    $code = ttyhbridge_get_response_code($http_response_header);
+    $code = ttyh_master_get_response_code($http_response_header);
 
     if ($code != 200) {
         return ['code' => $code];
@@ -36,10 +36,10 @@ function ttyhbridge_get($endpoint): array
     return ['code' => $code, 'payload' => json_decode($response)];
 }
 
-function ttyhbridge_post($endpoint, $payload): int
+function ttyh_master_post($endpoint, $payload): int
 {
-    $url = TTYHBRIDGE_HOST . '/' . $endpoint;
-    $auth_header = 'Authorization: Bearer ' . TTYHBRIDGE_TOKEN;
+    $url = TTYH_MASTER_HOST . '/' . $endpoint;
+    $auth_header = 'Authorization: Bearer ' . TTYH_MASTER_API_TOKEN;
 
     $options = [
         'http' => [
@@ -50,10 +50,10 @@ function ttyhbridge_post($endpoint, $payload): int
     ];
 
     file_get_contents($url, false, stream_context_create($options));
-    return ttyhbridge_get_response_code($http_response_header);
+    return ttyh_master_get_response_code($http_response_header);
 }
 
-function ttyhbridge_create_player($name, $pwd_hash, $pwd_salt): int
+function ttyh_master_create_player($name, $pwd_hash, $pwd_salt): int
 {
     $payload = [
         'player_name' => $name,
@@ -62,24 +62,24 @@ function ttyhbridge_create_player($name, $pwd_hash, $pwd_salt): int
             'salt' => $pwd_salt,
         ]
     ];
-    return ttyhbridge_post('ttyh/player/create', $payload);
+    return ttyh_master_post('ttyh/player/create', $payload);
 }
 
-function ttyhbridge_update_player($name, $payload): int
+function ttyh_master_update_player($name, $payload): int
 {
     $endpoint = 'ttyh/player/' . urlencode($name) . '/update';
-    return ttyhbridge_post($endpoint, $payload);
+    return ttyh_master_post($endpoint, $payload);
 }
 
-function ttyhbridge_update_player_name($name, $new_name): int
+function ttyh_master_update_player_name($name, $new_name): int
 {
     $payload = [
         'player_name' => $new_name
     ];
-    return ttyhbridge_update_player($name, $payload);
+    return ttyh_master_update_player($name, $payload);
 }
 
-function ttyhbridge_update_player_password($name, $pwd_hash, $pwd_salt): int
+function ttyh_master_update_player_password($name, $pwd_hash, $pwd_salt): int
 {
     $payload = [
         'password' => [
@@ -87,20 +87,20 @@ function ttyhbridge_update_player_password($name, $pwd_hash, $pwd_salt): int
             'salt' => $pwd_salt,
         ]
     ];
-    return ttyhbridge_update_player($name, $payload);
+    return ttyh_master_update_player($name, $payload);
 }
 
-function ttyhbridge_update_player_is_mojang($name, $is_mojang): int
+function ttyh_master_update_player_is_mojang($name, $is_mojang): int
 {
     $payload = [
         'is_mojang' => $is_mojang
     ];
 
-    return ttyhbridge_update_player($name, $payload);
+    return ttyh_master_update_player($name, $payload);
 }
 
 // returns [ 'code' => 200, 'payload' => [ 'player_id' => string, 'is_mojang' => bool ] ] or [ 'code' => int ]
-function ttyhbridge_query_player($name): array
+function ttyh_master_query_player($name): array
 {
-    return ttyhbridge_get('ttyh/player/' . urlencode($name));
+    return ttyh_master_get('ttyh/player/' . urlencode($name));
 }

@@ -3,7 +3,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'functions.php';
 
 function is_mojang(string $user): bool
 {
-    $result = ttyhbridge_query_player($user);
+    $result = ttyh_master_query_player($user);
     if ($result['code'] != 200) {
         return false;
     }
