@@ -9,8 +9,8 @@ use crate::db::NewPlayerInfo;
 use crate::extensions::ReJson;
 use crate::payload::{
     CreatePlayerRequest, ErrorResponse, HasJoinedRequestQuery, JoinRequest, LoginRequest,
-    LoginResponse, PlayerCertificates, PlayerInfoResponse, PlayerProfile, PlayerRequestQuery,
-    ProfileRequestQuery, SetSkinRequest, StatusResponse, UpdatePlayerRequest,
+    LoginResponse, PlayerCertificates, PlayerInfoResponse, PlayerProfile, ProfileRequestQuery,
+    SetSkinRequest, StatusResponse, UpdatePlayerRequest,
 };
 use crate::state::AppState;
 use crate::{assets, db, mojang, player_profile, signing, util};
@@ -37,7 +37,7 @@ pub async fn create_player(
 pub async fn update_player(
     State(state): State<AppState>,
     headers: HeaderMap,
-    Query(query): Query<PlayerRequestQuery>,
+    Path(player_name): Path<String>,
     ReJson(request): ReJson<UpdatePlayerRequest>,
 ) -> Result<StatusCode, StatusCode> {
     validate_api_token(&state, &headers).or(Err(StatusCode::FORBIDDEN))?;
@@ -50,16 +50,16 @@ pub async fn update_player(
     let mut trans = db_pool.begin().await.map_err(db::DbQueryError::from)?;
 
     if let Some(pwd) = request.password {
-        db::set_password(&mut trans, &query.name, &pwd.hash, &pwd.salt).await?;
+        db::set_password(&mut trans, &player_name, &pwd.hash, &pwd.salt).await?;
     }
 
     if let Some(is_mojang) = request.is_mojang {
-        db::set_is_mojang(&mut trans, &query.name, is_mojang).await?;
+        db::set_is_mojang(&mut trans, &player_name, is_mojang).await?;
     }
 
     // Renaming should be the last operation
-    if let Some(player_name) = request.player_name {
-        db::set_player_name(&mut trans, &query.name, &player_name).await?;
+    if let Some(new_player_name) = request.player_name {
+        db::set_player_name(&mut trans, &player_name, &new_player_name).await?;
     }
 
     trans.commit().await.map_err(db::DbLookupError::from)?;
@@ -67,14 +67,14 @@ pub async fn update_player(
     Ok(StatusCode::OK)
 }
 
-pub async fn player_info(
+pub async fn query_player(
     State(state): State<AppState>,
     headers: HeaderMap,
-    Query(query): Query<PlayerRequestQuery>,
+    Path(player_name): Path<String>,
 ) -> Result<PlayerInfoResponse, StatusCode> {
     validate_api_token(&state, &headers).or(Err(StatusCode::FORBIDDEN))?;
 
-    let record = db::get_player_record_by_name(&state.db_pool, &query.name).await?;
+    let record = db::get_player_record_by_name(&state.db_pool, &player_name).await?;
 
     Ok(PlayerInfoResponse {
         player_id: record.player_id,

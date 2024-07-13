@@ -33,9 +33,9 @@ async fn main() -> anyhow::Result<()> {
         .route("/ttyh/set_skin", post(api::set_skin))
         .route("/ttyh/login", post(api::login))
         // Ttyh Internal API
-        .route("/ttyh/bridge/create_player", post(api::create_player))
-        .route("/ttyh/bridge/update_player", post(api::update_player))
-        .route("/ttyh/bridge/player_info", get(api::player_info))
+        .route("/ttyh/player/create", post(api::create_player))
+        .route("/ttyh/player/:name", get(api::query_player))
+        .route("/ttyh/player/:name/update", post(api::update_player))
         // Session & Player API
         .route("/session/minecraft/join", post(api::join))
         .route("/session/minecraft/hasJoined", get(api::has_joined))

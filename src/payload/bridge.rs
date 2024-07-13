@@ -27,11 +27,6 @@ pub struct PlayerInfoResponse {
     pub is_mojang: bool,
 }
 
-#[derive(Deserialize)]
-pub struct PlayerRequestQuery {
-    pub name: String,
-}
-
 impl UpdatePlayerRequest {
     pub fn has_data(&self) -> bool {
         self.player_name.is_some() || self.password.is_some() || self.is_mojang.is_some()
