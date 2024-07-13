@@ -1,19 +1,13 @@
 <?php
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'functions.php';
 
 function is_mojang(string $user): bool
 {
-    $conn = dbconn();
-
-    $stmt = $conn->prepare('SELECT isMojang FROM players WHERE player = ?');
-    $stmt->execute([$user]);
-
-    $result = $stmt->fetch();
-    if ($result === false) {
+    $result = ttyhbridge_query_player($user);
+    if ($result['code'] != 200) {
         return false;
     }
-    $ism = $result['isMojang'] ? true : false;
-    return $ism;
+    return $result['payload']['is_mojang'];
 }
 
 if ($section === 'minecraft') {

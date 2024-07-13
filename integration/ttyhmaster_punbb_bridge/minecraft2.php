@@ -1,17 +1,10 @@
 <?php
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'init.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'functions.php';
 
 function set_mojang(string $user, bool $flag): bool
 {
-    $conn = dbconn();
-
-    $stmt = $conn->prepare('UPDATE players SET isMojang = ? WHERE player = ?');
-    $stmt->bindParam(1, $flag, PDO::PARAM_BOOL);
-    $stmt->bindParam(2, $user, PDO::PARAM_STR);
-    if (!$stmt->execute()) {
-        return false;
-    }
-    return true;
+    $code = ttyhbridge_update_player_is_mojang($user, $flag);
+    return $code == 200;
 }
 
 if ($section === 'minecraft') {
