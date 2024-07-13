@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <extension engine="1.0">
-	<id>ttyhmaster_punbb_bridge</id>
-	<title>Master bridge and stuff</title>
-	<version>1.0</version>
-	<description>subj</description>
-	<author>bot</author>
-	<minversion>1.4</minversion>
-	<maxtestedon>1.4.2</maxtestedon>
+    <id>ttyhmaster_punbb_bridge</id>
+    <title>Master bridge and stuff</title>
+    <version>1.0</version>
+    <description>subj</description>
+    <author>bot</author>
+    <minversion>1.4</minversion>
+    <maxtestedon>1.4.2</maxtestedon>
 
-	<hooks>
+    <hooks>
         <hook id="pf_change_details_new_section"><![CDATA[
-			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'minecraft.php';
+			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'pf_change_details_minecraft_section.php';
         ]]></hook>
-		<hook id="pf_change_details_new_section_validation"><![CDATA[
-			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'minecraft2.php';
+        <hook id="pf_change_details_new_section_validation"><![CDATA[
+			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'pf_change_details_minecraft_section_validation.php';
 		]]></hook>
-		<hook id="pf_change_details_modify_main_menu"><![CDATA[
+        <hook id="pf_change_details_modify_main_menu"><![CDATA[
 			$forum_page['main_menu']['minecraft'] = '<li' . (($section === 'minecraft') ? ' class="active"' : '') . '><a href="' . forum_link('profile.php?section=minecraft&amp;id=$1', $id) . '"><span>Minecraft</span></a></li>';
 		]]></hook>
-		<hook id="fn_validate_username_end"><![CDATA[
+        <hook id="fn_validate_username_end"><![CDATA[
 			if (preg_match('/[^a-zA-Z0-9_]/', $username)) {
 				$errors[] = 'Логин должен состоять только из латинских символов, цифр и подчеркивания.';
 			}
 		]]></hook>
-		<hook id="rg_register_pre_login_redirect" priority="10"><![CDATA[
-			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'register.php';
+        <hook id="rg_register_pre_login_redirect" priority="10"><![CDATA[
+			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'rg_register_pre_login_redirect.php';
 		]]></hook>
-		<hook id="pf_change_pass_key_qr_update_password, pf_change_pass_normal_qr_update_password"><![CDATA[
-			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'chpass.php';
+        <hook id="pf_change_pass_key_qr_update_password, pf_change_pass_normal_qr_update_password"><![CDATA[
+			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'pf_change_password.php';
 		]]></hook>
-	</hooks>
+    </hooks>
 </extension>
