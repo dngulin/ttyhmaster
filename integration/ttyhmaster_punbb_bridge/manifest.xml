@@ -24,8 +24,8 @@
 				$errors[] = 'Логин должен состоять только из латинских символов, цифр и подчеркивания.';
 			}
 		]]></hook>
-        <hook id="rg_register_pre_login_redirect" priority="10"><![CDATA[
-			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'rg_register_pre_login_redirect.php';
+        <hook id="rg_register_pre_add_user" priority="10"><![CDATA[
+			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'rg_register_pre_add_user.php';
 		]]></hook>
         <hook id="pf_change_pass_key_qr_update_password, pf_change_pass_normal_qr_update_password"><![CDATA[
 			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'pf_change_password.php';
