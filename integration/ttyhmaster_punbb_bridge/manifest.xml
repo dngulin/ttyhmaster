@@ -27,6 +27,9 @@
         <hook id="rg_register_pre_add_user" priority="10"><![CDATA[
 			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'rg_register_pre_add_user.php';
 		]]></hook>
+        <hook id="pf_change_details_qr_update_user"><![CDATA[
+			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'pf_change_details_qr_update_user.php';
+		]]></hook>
         <hook id="pf_change_pass_key_qr_update_password, pf_change_pass_normal_qr_update_password"><![CDATA[
 			require $ext_info['path'] . DIRECTORY_SEPARATOR . 'pf_change_password.php';
 		]]></hook>
