@@ -1,5 +1,11 @@
 <?php
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'functions.php';
+require_once __DIR__ . '/functions.php';
+
+if (file_exists(TTYH_MASTER_LANG_DIR . '/' . $forum_user['language'] . '/pf_section.php')) {
+    require_once TTYH_MASTER_LANG_DIR . '/' . $forum_user['language'] . '/pf_section.php';
+} else {
+    require_once TTYH_MASTER_LANG_DIR . '/English/pf_section.php';
+}
 
 function is_mojang(string $user): bool
 {
@@ -31,9 +37,9 @@ if ($section === 'minecraft') {
     // START SUBST - <!-- forum_main -->
     ob_start();
 
-    echo <<<'END'
+    echo <<<END
 	<div class="main-subhead">
-		<h2 class="hn"><span>Настройки Minecraft</span></h2>
+		<h2 class="hn"><span>{$lang_ttyhmaster['Title']}</span></h2>
 	</div>
 	<div class="main-content main-frm">
 
@@ -57,11 +63,11 @@ END;
 
 END;
     }
-    $forum_page['frm_info'][] = 'Чтобы играть с официального аккаунта, надо:';
-    $forum_page['frm_info'][] = '<li> Естественно его иметь</li>';
-    $forum_page['frm_info'][] = '<li><span> Зарегистрироваться на форуме под ником, совпадающим с официальным</span></li>';
-    $forum_page['frm_info'][] = '<li><span> Поставить соответствующую галку</span></li>';
-    $forum_page['frm_info'][] = '<li><span> Собственно, зайти через официальный лаунчер. Дополнительно модифицировать клиент не обязательно</span></li>';
+
+    $forum_page['frm_info'][] = $lang_ttyhmaster['Description'];
+    foreach ($lang_ttyhmaster['Description Items'] as $frm_info_desc_item) {
+        $forum_page['frm_info'][] = "<li><span>{$frm_info_desc_item}</span></li>";
+    }
 
     ++$forum_page['item_count'];
     ++$forum_page['fld_count'];
@@ -83,7 +89,7 @@ END;
 			<legend><span></span></legend>
 			<div class="mf-box"><div class="mf-item">
 				<span class="fld-input"><input type="checkbox" id="fld{$forum_page['fld_count']}" name="isMojang" value="1"$checked_insertion /></span>
-				<label for="fld{$forum_page['fld_count']}">Авторизация через серверы Mojang</label>
+				<label for="fld{$forum_page['fld_count']}">{$lang_ttyhmaster['Mojang Auth']}</label>
 			</div></div>
 		</fieldset>
 		<div class="frm-buttons">
