@@ -16,7 +16,7 @@ function set_mojang(string $user, bool $flag): bool
 if ($section === 'minecraft') {
     $isMojang = $_POST['isMojang'] ? true : false;
     if (!set_mojang($user['username'], $isMojang)) {
-        $errors[] = $lang_profile_ttyhmaster['Failed To Update Auth Settings'];
+        $errors[] = $lang_profile_ttyhmaster['Failed to update auth settings'];
     }
     if (empty($errors)) {
         $forum_flash->add_info($lang_profile['Profile redirect']);
