@@ -9,5 +9,6 @@ $lang_profile_ttyhmaster = [
         'Mark the corresponding check box below',
         'Play with official launcher (no modifications to it are required)',
     ],
-    'Mojang Auth' => 'Use Mojang Authorisation'
+    'Mojang Auth' => 'Use Mojang Authorisation',
+    'Failed To Update Auth Settings' => 'Failed to update auth settings',
 ];
