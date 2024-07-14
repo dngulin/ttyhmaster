@@ -39,7 +39,7 @@ if ($section === 'minecraft') {
 
     echo <<<END
 	<div class="main-subhead">
-		<h2 class="hn"><span>{$lang_ttyhmaster['Title']}</span></h2>
+		<h2 class="hn"><span>{$lang_profile_ttyhmaster['Title']}</span></h2>
 	</div>
 	<div class="main-content main-frm">
 
@@ -64,8 +64,8 @@ END;
 END;
     }
 
-    $forum_page['frm_info'][] = $lang_ttyhmaster['Description'];
-    foreach ($lang_ttyhmaster['Description Items'] as $frm_info_desc_item) {
+    $forum_page['frm_info'][] = $lang_profile_ttyhmaster['Description'];
+    foreach ($lang_profile_ttyhmaster['Description Items'] as $frm_info_desc_item) {
         $forum_page['frm_info'][] = "<li><span>{$frm_info_desc_item}</span></li>";
     }
 
@@ -89,7 +89,7 @@ END;
 			<legend><span></span></legend>
 			<div class="mf-box"><div class="mf-item">
 				<span class="fld-input"><input type="checkbox" id="fld{$forum_page['fld_count']}" name="isMojang" value="1"$checked_insertion /></span>
-				<label for="fld{$forum_page['fld_count']}">{$lang_ttyhmaster['Mojang Auth']}</label>
+				<label for="fld{$forum_page['fld_count']}">{$lang_profile_ttyhmaster['Mojang Auth']}</label>
 			</div></div>
 		</fieldset>
 		<div class="frm-buttons">

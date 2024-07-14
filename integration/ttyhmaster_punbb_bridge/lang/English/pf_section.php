@@ -1,6 +1,6 @@
 <?php
 
-$lang_ttyhmaster = [
+$lang_profile_ttyhmaster = [
     'Title' => 'Minecraft Settings',
     'Description' => 'In order to play with the official account you should:',
     'Description Items' => [
