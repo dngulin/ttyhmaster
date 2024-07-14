@@ -11,4 +11,5 @@ $lang_profile_ttyhmaster = [
     ],
     'Mojang Auth' => 'Use Mojang Authorisation',
     'Failed To Update Auth Settings' => 'Failed to update auth settings',
+    'Bad username' => 'User name should contain only alphanumeric symbols and underscores'
 ];

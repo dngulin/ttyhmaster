@@ -11,4 +11,5 @@ $lang_profile_ttyhmaster = [
     ],
     'Mojang Auth' => 'Авторизация через серверы Mojang',
     'Failed To Update Auth Settings' => 'Не удалось обновить настройки авторизации',
+    'Bad username' => 'Логин должен состоять только из латинских символов, цифр и подчеркивания'
 ];

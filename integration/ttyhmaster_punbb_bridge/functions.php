@@ -1,7 +1,6 @@
 <?php
 const TTYH_MASTER_HOST = 'http://example.com';
 const TTYH_MASTER_API_TOKEN = 'example-token';
-const TTYH_MASTER_LANG_DIR = __DIR__ . DIRECTORY_SEPARATOR . 'lang';
 
 function _ttyh_master_get_response_code($http_response_header): int
 {

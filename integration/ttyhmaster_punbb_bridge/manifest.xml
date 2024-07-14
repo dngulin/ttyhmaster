@@ -20,8 +20,14 @@
 			$forum_page['main_menu']['minecraft'] = '<li' . (($section === 'minecraft') ? ' class="active"' : '') . '><a href="' . forum_link('profile.php?section=minecraft&amp;id=$1', $id) . '"><span>Minecraft</span></a></li>';
 		]]></hook>
         <hook id="fn_validate_username_end"><![CDATA[
+            if (file_exists($ext_info['path'] . '/lang/' . $forum_user['language'] . '/profile_ttyhmaster.php')) {
+                require_once $ext_info['path'] . '/lang/' . $forum_user['language'] . '/profile_ttyhmaster.php';
+            } else {
+                require_once $ext_info['path'] . '/lang/English/profile_ttyhmaster.php';
+            }
+
 			if (preg_match('/[^a-zA-Z0-9_]/', $username)) {
-				$errors[] = 'Логин должен состоять только из латинских символов, цифр и подчеркивания.';
+				$errors[] = $lang_profile_ttyhmaster['Bad username'];
 			}
 		]]></hook>
         <hook id="rg_register_pre_add_user" priority="10"><![CDATA[

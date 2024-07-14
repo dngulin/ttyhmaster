@@ -1,10 +1,10 @@
 <?php
 require_once __DIR__ . '/functions.php';
 
-if (file_exists(TTYH_MASTER_LANG_DIR . '/' . $forum_user['language'] . '/pf_section.php')) {
-    require_once TTYH_MASTER_LANG_DIR . '/' . $forum_user['language'] . '/pf_section.php';
+if (file_exists(__DIR__ . '/lang/' . $forum_user['language'] . '/profile_ttyhmaster.php')) {
+    require_once __DIR__ . '/lang/' . $forum_user['language'] . '/profile_ttyhmaster.php';
 } else {
-    require_once TTYH_MASTER_LANG_DIR . '/English/pf_section.php';
+    require_once __DIR__ . '/lang/English/profile_ttyhmaster.php';
 }
 
 function is_mojang(string $user): bool
