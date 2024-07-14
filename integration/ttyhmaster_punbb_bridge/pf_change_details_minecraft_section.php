@@ -21,9 +21,8 @@ if ($section === 'minecraft') {
     $forum_page['group_count'] = $forum_page['item_count'] = $forum_page['fld_count'] = 0;
     $forum_page['form_action'] = forum_link('profile.php?section=minecraft&amp;id=$1', $id);
     $forum_page['hidden_fields'] = [
-        'form_sent'     => '<input type="hidden" name="form_sent" value="1" />',
-        'max_file_size' => '<input type="hidden" name="MAX_FILE_SIZE" value="50240" />',
-        'csrf_token'    => '<input type="hidden" name="csrf_token" value="'.generate_form_token($forum_page['form_action']).'" />'
+        'form_sent' => '<input type="hidden" name="form_sent" value="1" />',
+        'csrf_token' => '<input type="hidden" name="csrf_token" value="' . generate_form_token($forum_page['form_action']) . '" />'
     ];
     // Setup form information
     $forum_page['frm_info'] = [];
