@@ -64,7 +64,6 @@ END;
 END;
     }
 
-    $forum_page['frm_info'][] = $lang_profile_ttyhmaster['Description'];
     foreach ($lang_profile_ttyhmaster['Description items'] as $frm_info_desc_item) {
         $forum_page['frm_info'][] = "<li><span>{$frm_info_desc_item}</span></li>";
     }
@@ -81,6 +80,7 @@ END;
 			{$hidden_fields_formatted}
 		</div>
 		<div class="ct-box info-box">
+		    {$lang_profile_ttyhmaster['Description']}
 			<ul class="info-list">
 				{$frm_info_formatted}
 			</ul>
