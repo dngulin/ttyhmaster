@@ -62,12 +62,12 @@ function ttyh_master_create_player($name, $pwd_hash, $pwd_salt): int
             'salt' => $pwd_salt,
         ]
     ];
-    return _ttyh_master_post('ttyh/player/create', $payload);
+    return _ttyh_master_post('ttyh/player', $payload);
 }
 
 function _ttyh_master_update_player($name, $payload): int
 {
-    $endpoint = 'ttyh/player/' . urlencode($name) . '/update';
+    $endpoint = 'ttyh/player/' . urlencode($name);
     return _ttyh_master_post($endpoint, $payload);
 }
 
