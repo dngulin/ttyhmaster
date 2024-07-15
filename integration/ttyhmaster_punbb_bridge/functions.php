@@ -1,6 +1,10 @@
 <?php
-const TTYH_MASTER_HOST = 'http://example.com';
-const TTYH_MASTER_API_TOKEN = 'example-token';
+
+if (!defined('TTYH_MASTER_HOST'))
+    define('TTYH_MASTER_HOST', 'http://localhost');
+
+if (!defined('TTYH_MASTER_API_TOKEN'))
+    define('TTYH_MASTER_API_TOKEN', 'ttyhmaster-api-token');
 
 const TTYH_MASTER_HEADER = 'Authorization: Bearer ' . TTYH_MASTER_API_TOKEN;
 
