@@ -28,7 +28,14 @@ function _ttyh_master_get($endpoint): array
             'header' => TTYH_MASTER_HEADER
         ],
     ];
-    $response = file_get_contents(TTYH_MASTER_HOST . $endpoint, false, stream_context_create($options));
+
+    try {
+        $response = file_get_contents(TTYH_MASTER_HOST . $endpoint, false, stream_context_create($options));
+    } catch (Exception $e) {
+        error_log("Failed to perform a GET request to {$endpoint}: " . $e->getMessage());
+        return ['code' => -1];
+    }
+
     $code = _ttyh_master_get_response_code($http_response_header);
 
     if ($code != 200) {
@@ -47,7 +54,14 @@ function _ttyh_master_post($endpoint, $payload): int
             'content' => json_encode($payload),
         ],
     ];
-    file_get_contents(TTYH_MASTER_HOST . $endpoint, false, stream_context_create($options));
+
+    try {
+        file_get_contents(TTYH_MASTER_HOST . $endpoint, false, stream_context_create($options));
+    } catch (Exception $e) {
+        error_log("Failed to perform a POST request to {$endpoint}: " . $e->getMessage());
+        return -1;
+    }
+
     return _ttyh_master_get_response_code($http_response_header);
 }
 
