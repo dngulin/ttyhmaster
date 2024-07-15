@@ -57,3 +57,23 @@ workdir/
 ├── example.db
 └── server_key.pem
 ```
+
+## Internal API
+
+The internal API is very basic and allows to create, get and update players:
+
+| Action              | Endpoint                  | Request Payload                              | Responses                                                                |
+|---------------------|---------------------------|----------------------------------------------|--------------------------------------------------------------------------|
+| Create a new player | `POST /ttyh/player`       | [CreatePlayerRequest](src/payload/bridge.rs) | `400`, `500`, `200`                                                      |
+| Get player info     | `GET /ttyh/player/:name`  |                                              | `400`, `404`, `500`, `200` + [PlayerInfoResponse](src/payload/bridge.rs) |
+| Update player info  | `POST /ttyh/player/:name` | [UpdatePlayerRequest](src/payload/bridge.rs) | `400`, `404`, `500`, `200`                                               |
+
+Every endpoint should be called with the authorisation
+header: `Authorization: Bearer token-defined-in-the-config`.
+
+Response codes follow the standard HTTP convention:
+
+- `400` - Authorisation header is not set or invalid
+- `404` - Player not found
+- `500` - Database query error
+- `200` - Operation successful
