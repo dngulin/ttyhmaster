@@ -50,7 +50,10 @@ function _ttyh_master_post($endpoint, $payload): int
     $options = [
         'http' => [
             'method' => 'POST',
-            'header' => TTYH_MASTER_HEADER,
+            'header' => [
+                'Content-Type: application/json',
+                TTYH_MASTER_HEADER,
+            ],
             'content' => json_encode($payload),
         ],
     ];
