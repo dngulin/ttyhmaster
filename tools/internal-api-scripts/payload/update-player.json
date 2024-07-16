@@ -1,0 +1,8 @@
+{
+  "player_name": "Player2",
+  "password": {
+    "hash": "e2739d07436ab748e0993e9e2d11933d797b8765",
+    "salt": "salt2"
+  },
+  "is_mojang": true
+}

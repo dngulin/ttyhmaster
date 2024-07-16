@@ -1,0 +1,7 @@
+{
+  "player_name": "Player",
+  "password": {
+    "hash": "67f96bfa47a10b2f79c8fe6851ab760d0eff6747",
+    "salt": "salt"
+  }
+}
