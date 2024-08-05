@@ -61,7 +61,7 @@ function _ttyh_master_post($endpoint, $payload): int
     try {
         file_get_contents(TTYH_MASTER_HOST . $endpoint, false, stream_context_create($options));
     } catch (Exception $e) {
-        error_log("Failed to perform a POST request to {$endpoint}: " . $e->getMessage());
+        error_log("Failed to perform a POST request to $endpoint: " . $e->getMessage());
         return -1;
     }
 
