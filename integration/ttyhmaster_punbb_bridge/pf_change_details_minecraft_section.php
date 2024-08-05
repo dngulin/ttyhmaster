@@ -7,15 +7,6 @@ if (file_exists(__DIR__ . '/lang/' . $forum_user['language'] . '/profile_ttyhmas
     require_once __DIR__ . '/lang/English/profile_ttyhmaster.php';
 }
 
-function is_mojang(string $user): bool
-{
-    $result = ttyh_master_query_player($user);
-    if ($result['code'] != 200) {
-        return false;
-    }
-    return $result['payload']['is_mojang'];
-}
-
 if ($section === 'minecraft') {
     // Setup breadcrumbs
     $forum_page['crumbs'] = [
@@ -24,24 +15,37 @@ if ($section === 'minecraft') {
         'Minecraft',
     ];
     // Setup the form
-    $forum_page['group_count'] = $forum_page['item_count'] = $forum_page['fld_count'] = 0;
     $forum_page['form_action'] = forum_link('profile.php?section=minecraft&amp;id=$1', $id);
     $forum_page['hidden_fields'] = [
         'form_sent' => '<input type="hidden" name="form_sent" value="1" />',
         'csrf_token' => '<input type="hidden" name="csrf_token" value="' . generate_form_token($forum_page['form_action']) . '" />'
     ];
     // Setup form information
-    $forum_page['frm_info'] = [];
     define('FORUM_PAGE', 'profile-minecraft');
     require FORUM_ROOT . 'header.php';
+
+    $ttyhmaster_response = ttyh_master_query_player($user['username']);
+    switch ($ttyhmaster_response['code']) {
+        case 200:
+            $forum_page['hidden_fields']['form_type'] = '<input type="hidden" name="form_type" value="update" />';
+            break;
+        case 404:
+            $forum_page['hidden_fields']['form_type'] = '<input type="hidden" name="form_type" value="create" />';
+            break;
+        default:
+            $errors[] = $lang_profile_ttyhmaster['Failed to query player: '] . $ttyhmaster_response['code'];
+            break;
+    }
+
+
     // START SUBST - <!-- forum_main -->
     ob_start();
 
     echo <<<END
-	<div class="main-subhead">
-		<h2 class="hn"><span>{$lang_profile_ttyhmaster['Title']}</span></h2>
-	</div>
-	<div class="main-content main-frm">
+<div class="main-subhead">
+    <h2 class="hn"><span>{$lang_profile_ttyhmaster['Title']}</span></h2>
+</div>
+<div class="main-content main-frm">
 
 END;
 
@@ -54,51 +58,65 @@ END;
         $errors_formatted = implode("\n\t\t\t", $forum_page['errors']) . "\n";
 
         echo <<<END
-	<div class="ct-box error-box">
-		<h2 class="warn hn">{$lang_profile['Profile update errors']}</h2>
-		<ul class="error-list">
-			{$errors_formatted}
-		</ul>
-	</div>
+<div class="ct-box error-box">
+    <h2 class="warn hn">{$lang_profile['Profile update errors']}</h2>
+    <ul class="error-list">
+        {$errors_formatted}
+    </ul>
+</div>
 
 END;
     }
 
-    foreach ($lang_profile_ttyhmaster['Description items'] as $frm_info_desc_item) {
-        $forum_page['frm_info'][] = "<li><span>{$frm_info_desc_item}</span></li>";
-    }
-
-    ++$forum_page['item_count'];
-    ++$forum_page['fld_count'];
     $hidden_fields_formatted = implode("\n\t\t\t\t", $forum_page['hidden_fields']) . "\n";
-    $frm_info_formatted = implode("\n\t\t\t\t\t", $forum_page['frm_info']) . "\n";
-    $checked_insertion = is_mojang($user['username']) ? ' checked="checked"' : '';
 
-    echo <<<END
-	<form class="frm-form" method="post" accept-charset="utf-8" action="{$forum_page['form_action']}" enctype="multipart/form-data">
-		<div class="hidden">
-			{$hidden_fields_formatted}
-		</div>
-		<div class="ct-box info-box">
-		    {$lang_profile_ttyhmaster['Description']}
-			<ul class="info-list">
-				{$frm_info_formatted}
-			</ul>
-		</div>
-		<fieldset class="mf-set set{$forum_page['item_count']}">
-			<legend><span></span></legend>
-			<div class="mf-box"><div class="mf-item">
-				<span class="fld-input"><input type="checkbox" id="fld{$forum_page['fld_count']}" name="isMojang" value="1"$checked_insertion /></span>
-				<label for="fld{$forum_page['fld_count']}">{$lang_profile_ttyhmaster['Mojang auth']}</label>
-			</div></div>
-		</fieldset>
-		<div class="frm-buttons">
-			<span class="submit primary"><input type="submit" name="update" value="{$lang_profile['Update profile']}" /></span>
-		</div>
-	</form>
+    if ($ttyhmaster_response['code'] == 200) {
+        $is_mojang_checked_attr = $ttyhmaster_response['payload']['is_mojang'] ? 'checked="checked"' : '';
+
+        echo <<<END
+<form class="frm-form" method="post" accept-charset="utf-8" action="{$forum_page['form_action']}" enctype="multipart/form-data">
+    <div class="hidden">
+        {$hidden_fields_formatted}
+    </div>
+    <fieldset class="frm-group group1">
+        <legend class="group-legend"><strong>Minecraft Settings</strong></legend>
+        <div class="ct-set set1">
+            <div class="ct-box">
+                <h3 class="hn ct-legend">UUID</h3>
+                <p>{$ttyhmaster_response['payload']['player_id']}</p>
+            </div>
+        </div>
+        <div class="sf-set set2">
+            <div class="sf-box checkbox">
+                <span class="fld-input"><input type="checkbox" id="fld2" name="form[is_mojang]" value="1" {$is_mojang_checked_attr}/></span>
+                <label for="fld2">{$lang_profile_ttyhmaster['Mojang auth']}</label>
+            </div>
+        </div>
+    </fieldset>
+    <div class="frm-buttons">
+        <span class="submit primary"><input type="submit" name="update" value="{$lang_profile['Update profile']}" /></span>
+    </div>
+</form>
 
 END;
-    echo '</div>';
+    } elseif ($ttyhmaster_response['code'] == 404) {
+        echo <<<END
+<form class="frm-form" method="post" accept-charset="utf-8" action="{$forum_page['form_action']}" enctype="multipart/form-data">
+    <div class="hidden">
+        {$hidden_fields_formatted}
+    </div>
+    <div class="ct-box info-box">
+        <p>{$lang_profile_ttyhmaster['Account is not linked']}</p>
+    </div>
+    <div class="frm-buttons">
+        <span class="submit primary"><input type="submit" name="update" value="{$lang_profile_ttyhmaster['Link account']}" /></span>
+    </div>
+</form>
+
+END;
+    }
+
+    echo '</div>'; // <div class="main-content main-frm">
 
     $tpl_temp = forum_trim(ob_get_contents());
     $tpl_main = str_replace('<!-- forum_main -->', $tpl_temp, $tpl_main);
