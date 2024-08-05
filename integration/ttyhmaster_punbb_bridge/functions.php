@@ -42,7 +42,7 @@ function _ttyh_master_get($endpoint): array
         return ['code' => $code];
     }
 
-    return ['code' => $code, 'payload' => json_decode($response)];
+    return ['code' => $code, 'payload' => json_decode($response, true)];
 }
 
 function _ttyh_master_post($endpoint, $payload): int
